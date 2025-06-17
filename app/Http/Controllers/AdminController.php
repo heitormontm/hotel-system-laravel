@@ -8,6 +8,8 @@ use App\Models\User;
 
 use Illuminate\Support\Facades\Auth;
 
+use App\Models\Room;
+
 class AdminController extends Controller
 {
     
@@ -34,6 +36,44 @@ class AdminController extends Controller
 
     public function home() {
         return view('home.index');
+    }
+
+    public function create_room() {
+
+        return view('admin.create_room');
+
+    }
+
+    public function add_room(Request $request) {
+        
+        $data = new Room();
+
+        $data->room_title = $request->title;
+
+        $data->description = $request->description;
+
+        $data->price = $request->price;
+
+        $data->wifi = $request->wifi;
+
+        $data->room_type = $request->type;
+
+        $image = $request->image;
+
+        if($image) {
+
+            $imageName = time().'.'.$image->getClientOriginalExtension();
+
+            $request->image->move('room', $imageName);
+
+            $data->image = $imageName;
+
+        }
+
+        $data->save();
+
+        return redirect()->back();
+
     }
 
 }
