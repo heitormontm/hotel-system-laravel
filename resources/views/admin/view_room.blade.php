@@ -25,19 +25,28 @@
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
     <style type="text/css">
-        label{
-            display: inline-block;
-            width: 200px;
-        }
-
-        .div_deg {
-            padding-top: 30px;
-        }
-
-        .div_center {
+        
+        .table_deg{
+            border: 2px solid white;
+            margin: auto;
+            width: 80%;
             text-align: center;
-            padding-top: 40px;
+            margin-top: 40px;
         }
+
+        .th_deg {
+            background-color: skyblue;
+            padding: 15px;
+        }
+
+        tr {
+            border: 3px solid white;
+        }
+
+        td {
+            padding: 10px;
+        }
+
     </style>
     </head>
   <body>
@@ -201,66 +210,47 @@
                 <li><a href="#exampledropdownDropdown" aria-expanded="false" data-toggle="collapse"> <i class="icon-windows"></i>Hotel Rooms </a>
                   <ul id="exampledropdownDropdown" class="collapse list-unstyled ">
                     <li><a href="{{url('create_room')}}">Add Rooms</a></li>
-                    <li><a href="{{url('view_room')}}">View Rooms</a></li>
+                    <li><a href="{{url('view_room')}}">View Romms</a></li>
                   </ul>
                 </li>
         </ul>
       </nav>
       <!-- Sidebar Navigation end-->
-      <div class="page-content">
+    <div class="page-content">
         <div class="page-header">
-          <div class="container-fluid">
-            <div class="div_center">
-            
-                <h1 style="font-size: 30px; font-weight: bold">Add Rooms</h1>
+            <div class="container-fluid">
 
-                <form action="{{url('add_room')}}" method="POST" enctype="multipart/form-data">
-                    @csrf
+                <table class="table_deg">
 
-                    <div class="div_deg">
-                        <label>Room Title</label>
-                        <input type="text" name="title">
-                    </div>
+                    <tr>
+                        <th class="th_deg">Room Title</th>
+                        <th class="th_deg">Description</th>
+                        <th class="th_deg">Price</th>
+                        <th class="th_deg">Wifi</th>
+                        <th class="th_deg">Room Type</th>
+                        <th class="th_deg">Image</th>
+                    </tr>
 
-                    <div class="div_deg">
-                        <label>Description</label>
-                        <textarea name="description"></textarea>
-                    </div>
+                    @foreach($data as $data)
+                    <tr>
+                       
+                        <td>{{$data->room_title}}</td>
+                        <td>{!! Str::limit($data->description, 150) !!}</td>
+                        <td>{{$data->price}}</td>
+                        <td>{{$data->wifi}}</td>
+                        <td>{{$data->room_type}}</td>
+                        <td>
+                            <img width="100" src="room/{{$data->image}}">
+                        </td>
+                        
+                    </tr>
+                    @endforeach
 
-                    <div class="div_deg">
-                        <label>Price</label>
-                        <input type="number" name="price">
-                    </div>
+                </table>
 
-                    <div class="div_deg">
-                        <label>Room Type</label>
-                        <select name="type">
-                            <option selected value="regular">Regular</option>
-                            <option value="premium">Premium</option>
-                            <option value="deluxe">Deluxe</option>
-                        </select>
-                    </div>
-
-                    <div class="div_deg">
-                        <label>Free Wifi</label>
-                        <select name="wifi">
-                            <option selected value="yes">Yes</option>
-                            <option value="no">No</option>
-                        </select>
-                    </div>
-
-                    <div class="div_deg">
-                        <label>Upload Image</label>
-                        <input type="file" name="image">
-                    </div>
-
-                    <div class="div_deg">
-                        <input class="btn btn-primary" type="submit" value="Add Room">
-                    </div>
-                </form>
+            </div>
         </div>
-          </div>
-        </div>
+    </div>      
         
         <footer class="footer">
           <div class="footer__block block no-margin-bottom">
