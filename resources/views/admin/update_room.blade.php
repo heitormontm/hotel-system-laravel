@@ -3,50 +3,46 @@
   <head> 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Dark Bootstrap Admin </title>
+    <title>Dark Bootstrap Admin</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="all,follow">
+
     <!-- Bootstrap CSS-->
-    <link rel="stylesheet" href="admin/vendor/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ asset('admin/vendor/bootstrap/css/bootstrap.min.css') }}">
     <!-- Font Awesome CSS-->
-    <link rel="stylesheet" href="admin/vendor/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{ asset('admin/vendor/font-awesome/css/font-awesome.min.css') }}">
     <!-- Custom Font Icons CSS-->
-    <link rel="stylesheet" href="admin/css/font.css">
+    <link rel="stylesheet" href="{{ asset('admin/css/font.css') }}">
     <!-- Google fonts - Muli-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Muli:300,400,700">
-    <!-- theme stylesheet-->
-    <link rel="stylesheet" href="admin/css/style.default.css" id="theme-stylesheet">
+    <!-- Theme stylesheet-->
+    <link rel="stylesheet" href="{{ asset('admin/css/style.default.css') }}" id="theme-stylesheet">
     <!-- Custom stylesheet - for your changes-->
-    <link rel="stylesheet" href="admin/css/custom.css">
+    <link rel="stylesheet" href="{{ asset('admin/css/custom.css') }}">
     <!-- Favicon-->
-    <link rel="shortcut icon" href="admin/img/favicon.ico">
-    <!-- Tweaks for older IEs--><!--[if lt IE 9]>
+    <link rel="shortcut icon" href="{{ asset('admin/img/favicon.ico') }}">
+
+    <!-- Tweaks for older IEs -->
+    <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
     <style type="text/css">
-        
-        .table_deg{
-            border: 2px solid white;
-            margin: auto;
-            width: 80%;
+        label {
+            display: inline-block;
+            width: 200px;
+        }
+
+        .div_deg {
+            padding-top: 30px;
+        }
+
+        .div_center {
             text-align: center;
-            margin-top: 40px;
+            padding-top: 40px;
         }
-
-        .th_deg {
-            background-color: skyblue;
-            padding: 15px;
-        }
-
-        tr {
-            border: 3px solid white;
-        }
-
-        td {
-            padding: 10px;
-        }
-
     </style>
     </head>
   <body>
@@ -210,63 +206,75 @@
                 <li><a href="#exampledropdownDropdown" aria-expanded="false" data-toggle="collapse"> <i class="icon-windows"></i>Hotel Rooms </a>
                   <ul id="exampledropdownDropdown" class="collapse list-unstyled ">
                     <li><a href="{{url('create_room')}}">Add Rooms</a></li>
-                    <li><a href="{{url('view_room')}}">View Romms</a></li>
+                    <li><a href="{{url('view_room')}}">View Rooms</a></li>
                   </ul>
                 </li>
         </ul>
       </nav>
       <!-- Sidebar Navigation end-->
-    <div class="page-content">
+      <div class="page-content">
         <div class="page-header">
-            <div class="container-fluid">
+          <div class="container-fluid">
+            <div class="div_center">
+            
+                <h1 style="font-size: 30px; font-weight: bold">Update Rooms</h1>
 
-                <table class="table_deg">
+                <form action="{{url('edit_room', $data->id)}}" method="POST" enctype="multipart/form-data">
+                    @csrf
 
-                    <tr>
-                        <th class="th_deg">Room Title</th>
-                        <th class="th_deg">Description</th>
-                        <th class="th_deg">Price</th>
-                        <th class="th_deg">Wifi</th>
-                        <th class="th_deg">Room Type</th>
-                        <th class="th_deg">Image</th>
-                        <th class="th_deg">Delete</th>
-                        <th class="th_deg">Update</th>
-                    </tr>
+                    <div class="div_deg">
+                        <label>Room Title</label>
+                        <input type="text" name="title" value="{{$data->room_title}}">
+                    </div>
 
-                    @foreach($data as $data)
-                    <tr>
-                       
-                        <td>{{$data->room_title}}</td>
-                        <td>{!! Str::limit($data->description, 150) !!}</td>
-                        <td>{{$data->price}}</td>
-                        <td>{{$data->wifi}}</td>
-                        <td>{{$data->room_type}}</td>
-                        <td>
-                            <img width="100" src="room/{{$data->image}}">
-                        </td>
-                        <td>
-                          <a 
-                          onclick="return confirm('Are you sure to delete this?')" 
-                          class="btn btn-danger" 
-                          href="{{url('room_delete', $data->id)}}">
-                          Delete
-                        </a>
-                        </td>
-                        <td>
-                          <a 
-                          class="btn btn-warning" 
-                          href="{{url('room_update', $data->id)}}">
-                          Update
-                        </a>
-                        </td>
-                    </tr>
-                    @endforeach
+                    <div class="div_deg">
+                        <label>Description</label>
+                        <textarea name="description">
+                            {{$data->description}}
+                        </textarea>
+                    </div>
 
-                </table>
+                    <div class="div_deg">
+                        <label>Price</label>
+                        <input type="number" name="price" value="{{$data->price}}">
+                    </div>
 
-            </div>
+                    <div class="div_deg">
+                        <label>Room Type</label>
+                        <select name="type">
+                            <option selected value="{{$data->room_type}}">{{$data->room_type}}</option>
+                            <option value="regular">Regular</option>
+                            <option value="premium">Premium</option>
+                            <option value="deluxe">Deluxe</option>
+                        </select>
+                    </div>
+
+                    <div class="div_deg">
+                        <label>Free Wifi</label>
+                        <select name="wifi">
+                            <option selected value="{{$data->wifi}}">{{$data->wifi}}</option>
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+                        </select>
+                    </div>
+
+                    <div class="div_deg">
+                        <label>Current Image</label>
+                        <img style="margin: auto;" width="100" src="/room/{{$data->image}}">
+                    </div>
+                    
+                    <div class="div_deg">
+                        <label>Upload Image</label>
+                        <input type="file" name="image">
+                    </div>
+
+                    <div class="div_deg">
+                        <input class="btn btn-primary" type="submit" value="Update Room">
+                    </div>
+                </form>
         </div>
-    </div>      
+          </div>
+        </div>
         
         <footer class="footer">
           <div class="footer__block block no-margin-bottom">
@@ -279,13 +287,13 @@
       </div>
     </div>
     <!-- JavaScript files-->
-    <script src="admin/vendor/jquery/jquery.min.js"></script>
-    <script src="admin/vendor/popper.js/umd/popper.min.js"> </script>
-    <script src="admin/vendor/bootstrap/js/bootstrap.min.js"></script>
-    <script src="admin/vendor/jquery.cookie/jquery.cookie.js"> </script>
-    <script src="admin/vendor/chart.js/Chart.min.js"></script>
-    <script src="admin/vendor/jquery-validation/jquery.validate.min.js"></script>
-    <script src="admin/js/charts-home.js"></script>
-    <script src="admin/js/front.js"></script>
+    <script src="{{ asset('admin/vendor/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('admin/vendor/popper.js/umd/popper.min.js') }}"></script>
+    <script src="{{ asset('admin/vendor/bootstrap/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('admin/vendor/jquery.cookie/jquery.cookie.js') }}"></script>
+    <script src="{{ asset('admin/vendor/chart.js/Chart.min.js') }}"></script>
+    <script src="{{ asset('admin/vendor/jquery-validation/jquery.validate.min.js') }}"></script>
+    <script src="{{ asset('admin/js/charts-home.js') }}"></script>
+    <script src="{{ asset('admin/js/front.js') }}"></script>
   </body>
 </html>

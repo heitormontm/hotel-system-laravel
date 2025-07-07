@@ -84,4 +84,54 @@ class AdminController extends Controller
 
     }
 
+    public function room_delete($id) {
+        
+        $data = Room::find($id);
+
+        $data->delete();
+
+        return redirect()->back();
+
+    }
+
+    public function room_update($id) {
+    
+        $data = Room::find($id);
+
+        return view ('admin.update_room', compact('data'));
+
+    }
+
+    public function edit_room(Request $request, $id) {
+
+        $data = Room::find($id);
+
+        $data->room_title = $request->title;
+
+        $data->description = $request->description;
+
+        $data->price = $request->price;
+        
+        $data->wifi = $request->wifi;
+
+        $data->room_type = $request->type;
+
+        $image = $request->image;
+
+        if($image) {
+
+            $imageName = time().'.'.$image->getClientOriginalExtension();
+
+            $request->image->move('room', $imageName);
+
+            $data->image = $imageName;
+
+        }
+
+        $data->save();
+
+        return redirect()->back();
+
+    }
+
 }
